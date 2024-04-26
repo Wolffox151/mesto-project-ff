@@ -11,7 +11,7 @@ const createCard = (data, onDelete) => {
   const deleteButton = newCard.querySelector('.card__delete-button')
 
   imageCard.src = data.link
-  imageCard.alt = `Картинка`
+  imageCard.alt = `Изображение ${data.name}`
   titleCard.textContent = data.name;
   
 
