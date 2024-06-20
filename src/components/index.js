@@ -1,7 +1,7 @@
 import '../pages/index.css';
 import { initialCards } from './cards.js';
 import { placesList, createCard, handleDeleteCard, cardForm, addCardFormSubmit } from './card.js'
-import { openModal, closeModal, popupTypeProfileEdit, openImagePopup, popupTypeAddNewCard } from './modal.js'
+import { openModal, closeModal, popupTypeProfileEdit, popupTypeAddNewCard } from './modal.js'
 
 // @todo: Вывести карточки на страницу
 initialCards.forEach((data) => {
@@ -61,4 +61,4 @@ document.addEventListener('click', (evt) => {
 // Прикрепляем обработчик к форме:
 // он будет следить за событием “submit” - «отправка»
 cardForm.addEventListener('submit', addCardFormSubmit);
-document.addEventListener('click', openImagePopup);
+// document.addEventListener('click', openImagePopup);

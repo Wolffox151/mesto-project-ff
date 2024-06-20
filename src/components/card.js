@@ -1,5 +1,5 @@
 // @todo: Функция создания карточки
-import { closeModal, popupTypeAddNewCard } from './modal.js'
+import { openModal, closeModal, popupTypeAddNewCard } from './modal.js'
 const templateCard = document.querySelector('#card-template').content.querySelector('.places__item');
 // @todo: DOM узлы
 export const placesList = document.querySelector('.places__list');
@@ -13,26 +13,55 @@ export const createCard = (data, onDelete, onLike, onImage) => {
   imageCard.alt = `Изображение ${data.name}`
   titleCard.textContent = data.name;
   
-
   deleteButton.addEventListener('click', () => {
     onDelete(newCard)
   });
+  
+
+  onImage = (evt, imagePopup) => {
+    // console.log(evt.target.src)
+    openedImage.src = evt.target.src
+    // console.log(openedImage.src)
+    console.log(imagePopup)
+    openedImage.alt= data.name
+    popupCaption.textContent = data.name
+    //imagePopup.classList.add('popup_is-opened')
+    openModal(imagePopup)
+  }
+
+  imageCard.addEventListener('click', onImage)
 
   return newCard;
 }
+
+const imagePopup = document.querySelector('.popup_type_image')
+const openedImage = document.querySelector('.popup__image')
+const popupCaption = imagePopup.querySelector('.popup__caption')
+
+const onLike = (evt) => {
+  if (evt.target.classList.contains('card__like-button')) {
+    evt.target.classList.toggle('card__like-button_is-active')
+  }
+}
+
+// // @todo: Открытие попапа при нажатии на картинку
+// export const openImagePopup = (evt) => {
+//   if (evt.target.classList.contains('card__image')) {
+//     const clickedCard = evt.target.closest('.places__item')
+//     const clickedCardImageLink = evt.target.src
+//     const clickedCardImageAlt = evt.target.alt
+//     const clickedCardImageHeading = clickedCard.querySelector('.card__title').textContent
+//     openedImage.src = clickedCardImageLink
+//     openedImage.alt= clickedCardImageAlt
+//     popupCaption.textContent = clickedCardImageHeading
+//     openModal(imagePopup)
+//   }
+// }
 
 // @todo: Функция удаления карточки
 export const handleDeleteCard = (card) => {
   card.remove();
 }
-
-// @todo: Функция лайка карточки
-export const likeCard = (evt) => {
-  if (evt.target.classList.contains('card__like-button')) {
-    evt.target.classList.toggle('card__like-button_is-active')
-  }
-}
-placesList.addEventListener('click', likeCard);
 
 export const cardForm = document.querySelector('.popup_type_new-card').querySelector('.popup__form')
 // @todo: Функция добавления карточки
