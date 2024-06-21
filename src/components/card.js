@@ -16,22 +16,20 @@ export const createCard = (data, onDelete, onLike, onImage) => {
   deleteButton.addEventListener('click', () => {
     onDelete(newCard)
   });
+
+  imageCard.addEventListener('click', () => {
+    onImage(data)
+  })
   
-
-  onImage = (evt, imagePopup) => {
-    // console.log(evt.target.src)
-    openedImage.src = evt.target.src
-    // console.log(openedImage.src)
-    console.log(imagePopup)
-    openedImage.alt= data.name
-    popupCaption.textContent = data.name
-    //imagePopup.classList.add('popup_is-opened')
-    openModal(imagePopup)
-  }
-
-  imageCard.addEventListener('click', onImage)
-
   return newCard;
+}
+
+const onImage = (evt) => {
+  openedImage.src = evt.target.src
+  console.log(imageCard)
+  openedImage.alt= data.name
+  popupCaption.textContent = data.name
+  openModal(imagePopup)
 }
 
 const imagePopup = document.querySelector('.popup_type_image')
