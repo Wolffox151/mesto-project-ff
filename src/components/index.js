@@ -3,11 +3,24 @@ import { initialCards } from './cards.js';
 import { placesList, createCard, handleDeleteCard, cardForm, addCardFormSubmit } from './card.js'
 import { openModal, closeModal, popupTypeProfileEdit, popupTypeAddNewCard } from './modal.js'
 
+const imagePopup = document.querySelector('.popup_type_image')
+const openedImage = document.querySelector('.popup__image')
+const popupCaption = imagePopup.querySelector('.popup__caption')
+
+const openImagePopup = (data) => {
+  openedImage.src = data.link
+  openedImage.alt= data.name
+  popupCaption.textContent = data.name
+  openModal(imagePopup)
+}
+
+
 // @todo: Вывести карточки на страницу
 initialCards.forEach((data) => {
-  const newCard = createCard(data, handleDeleteCard);
+  const newCard = createCard(data, handleDeleteCard, openImagePopup);
   placesList.append(newCard)
 })
+
 
 // @todo: Список попапов
 const popups = document.querySelectorAll('.popup');
