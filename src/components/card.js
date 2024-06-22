@@ -1,5 +1,5 @@
 // @todo: Функция создания карточки
-import { openModal, closeModal, popupTypeAddNewCard } from './modal.js'
+import { closeModal, popupTypeAddNewCard } from './modal.js'
 const templateCard = document.querySelector('#card-template').content.querySelector('.places__item');
 // @todo: DOM узлы
 export const placesList = document.querySelector('.places__list');
