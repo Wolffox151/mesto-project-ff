@@ -2,6 +2,7 @@
 export const openModal = (popup) => {
 	popup.classList.add('popup_is-opened');
   document.addEventListener('keyup', closePopupOnEscape);
+  document.addEventListener('click', closePopupOnOverlayClick)
 }
 
 
@@ -11,7 +12,7 @@ export const popupTypeAddNewCard = document.querySelector('.popup_type_new-card'
 export const closeModal = (popups) => {
 	popups.classList.remove('popup_is-opened');
   document.removeEventListener('keyup', closePopupOnEscape);
-  document.removeEventListener('click', closePopupOnOverlayClick);
+  document.removeEventListener('click', closePopupOnOverlayClick)
 }
 
 export const closePopupOnOverlayClick= (evt) => {

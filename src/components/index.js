@@ -24,7 +24,6 @@ document.addEventListener('click', (evt) => {
     nameInput.value = document.querySelector('.profile__title').textContent
     jobInput.value = document.querySelector('.profile__description').textContent
     openModal(popupTypeProfileEdit);
-    document.addEventListener('click', closePopupOnOverlayClick);
   }
 });
 
@@ -57,7 +56,6 @@ profileForm.addEventListener('submit', editProfileForm);
 document.addEventListener('click', (evt) => {
   if (evt.target.classList.contains('profile__add-button')) {
     openModal(popupTypeAddNewCard);
-    document.addEventListener('click', closePopupOnOverlayClick);
   }
 });
 
