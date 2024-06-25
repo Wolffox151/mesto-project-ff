@@ -1,23 +1,11 @@
 import '../pages/index.css';
 import { initialCards } from './cards.js';
-import { placesList, createCard, handleDeleteCard, cardForm, addCardFormSubmit } from './card.js'
-import { openModal, closeModal, popupTypeProfileEdit, popupTypeAddNewCard } from './modal.js'
-
-const imagePopup = document.querySelector('.popup_type_image')
-const openedImage = document.querySelector('.popup__image')
-const popupCaption = imagePopup.querySelector('.popup__caption')
-
-const openImagePopup = (data) => {
-  openedImage.src = data.link
-  openedImage.alt= data.name
-  popupCaption.textContent = data.name
-  openModal(imagePopup)
-}
-
+import { placesList, createCard, handleDeleteCard, openImagePopup, toggleLikeButton, cardForm, addCardFormSubmit } from './card.js'
+import { openModal, closeModal, popupTypeProfileEdit, popupTypeAddNewCard, closePopupOnOverlayClick } from './modal.js'
 
 // @todo: Вывести карточки на страницу
 initialCards.forEach((data) => {
-  const newCard = createCard(data, handleDeleteCard, openImagePopup);
+  const newCard = createCard(data, handleDeleteCard, openImagePopup, toggleLikeButton);
   placesList.append(newCard)
 })
 
@@ -36,6 +24,7 @@ document.addEventListener('click', (evt) => {
     nameInput.value = document.querySelector('.profile__title').textContent
     jobInput.value = document.querySelector('.profile__description').textContent
     openModal(popupTypeProfileEdit);
+    document.addEventListener('click', closePopupOnOverlayClick);
   }
 });
 
@@ -68,6 +57,7 @@ profileForm.addEventListener('submit', editProfileForm);
 document.addEventListener('click', (evt) => {
   if (evt.target.classList.contains('profile__add-button')) {
     openModal(popupTypeAddNewCard);
+    document.addEventListener('click', closePopupOnOverlayClick);
   }
 });
 
