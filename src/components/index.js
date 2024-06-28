@@ -1,7 +1,7 @@
 import '../pages/index.css';
 import { initialCards } from './cards.js';
-import { placesList, createCard, handleDeleteCard, openImagePopup, toggleLikeButton, cardForm, addCardFormSubmit } from './card.js'
-import { openModal, closeModal, popupTypeProfileEdit, popupTypeAddNewCard, closePopupOnOverlayClick } from './modal.js'
+import { placesList, createCard, handleDeleteCard, openImagePopup, toggleLikeButton, cardForm, popupTypeAddNewCard, addCardFormSubmit } from './card.js'
+import { openModal, closeModal, popupTypeProfileEdit, closePopupOnOverlayClick } from './modal.js'
 
 // @todo: Вывести карточки на страницу
 initialCards.forEach((data) => {
@@ -16,6 +16,7 @@ const popups = document.querySelectorAll('.popup');
 // @todo: Плавная анимация
 popups.forEach((popup) => {
   popup.classList.add('popup_is-animated')
+  popup.addEventListener('click', closePopupOnOverlayClick)
 })
 
 // @todo: Открытие попапа для редактирования профиля

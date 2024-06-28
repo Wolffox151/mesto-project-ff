@@ -1,5 +1,5 @@
 // @todo: Функция создания карточки
-import { openModal, closeModal, popupTypeAddNewCard} from './modal.js'
+import { openModal, closeModal } from './modal.js'
 const templateCard = document.querySelector('#card-template').content.querySelector('.places__item');
 // @todo: DOM узлы
 export const placesList = document.querySelector('.places__list');
@@ -31,25 +31,13 @@ export const createCard = (data, onDelete, onImage, onLike) => {
   return newCard;
 }
 
-// // @todo: Открытие попапа при нажатии на картинку
-// export const openImagePopup = (evt) => {
-//   if (evt.target.classList.contains('card__image')) {
-//     const clickedCard = evt.target.closest('.places__item')
-//     const clickedCardImageLink = evt.target.src
-//     const clickedCardImageAlt = evt.target.alt
-//     const clickedCardImageHeading = clickedCard.querySelector('.card__title').textContent
-//     openedImage.src = clickedCardImageLink
-//     openedImage.alt= clickedCardImageAlt
-//     popupCaption.textContent = clickedCardImageHeading
-//     openModal(imagePopup)
-//   }
-// }
-
 // @todo: Функция удаления карточки
 export const handleDeleteCard = (card) => {
   card.remove();
 }
 
+
+// @todo: Открытие попапа картинки
 const imagePopup = document.querySelector('.popup_type_image')
 const openedImage = document.querySelector('.popup__image')
 const popupCaption = imagePopup.querySelector('.popup__caption')
@@ -58,13 +46,18 @@ export const openImagePopup = (data) => {
   openedImage.src = data.link
   openedImage.alt= data.name
   popupCaption.textContent = data.name
-  openModal(imagePopup);
+  openModal(imagePopup)
 }
+
+// @todo: Лайк карточки
 
 export const toggleLikeButton = (LikeButton) => {
   LikeButton.classList.toggle('card__like-button_is-active')
 }
 
+
+export const popupTypeAddNewCard = document.querySelector('.popup_type_new-card')
+// @todo: Создание карточки
 export const cardForm = document.querySelector('.popup_type_new-card').querySelector('.popup__form')
 // @todo: Функция добавления карточки
 export const addCardFormSubmit = (evt) => {
