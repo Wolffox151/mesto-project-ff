@@ -97,4 +97,3 @@ addCardButton.addEventListener('click', () => {
 // Прикрепляем обработчик к форме:
 // он будет следить за событием “submit” - «отправка»
 cardForm.addEventListener('submit', addCardFormSubmit);
-// document.addEventListener('click', openImagePopup);
