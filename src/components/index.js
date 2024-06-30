@@ -1,7 +1,22 @@
 import '../pages/index.css';
 import { initialCards } from './cards.js';
-import { placesList, createCard, handleDeleteCard, openImagePopup, toggleLikeButton, cardForm, popupTypeAddNewCard, addCardFormSubmit } from './card.js'
+import { createCard, handleDeleteCard, toggleLikeButton } from './card.js'
 import { openModal, closeModal, popupTypeProfileEdit, closePopupOnOverlayClick } from './modal.js'
+
+
+const placesList = document.querySelector('.places__list');
+
+// @todo: Открытие попапа картинки
+const imagePopup = document.querySelector('.popup_type_image')
+const openedImage = document.querySelector('.popup__image')
+const popupCaption = imagePopup.querySelector('.popup__caption')
+
+const openImagePopup = (data) => {
+  openedImage.src = data.link
+  openedImage.alt= data.name
+  popupCaption.textContent = data.name
+  openModal(imagePopup)
+}
 
 // @todo: Вывести карточки на страницу
 initialCards.forEach((data) => {
@@ -19,14 +34,16 @@ popups.forEach((popup) => {
   popup.addEventListener('click', closePopupOnOverlayClick)
 })
 
+const editProfileButton = document.querySelector('.profile__edit-button')
+const profileTitle = document.querySelector('.profile__title')
+const profileDescription = document.querySelector('.profile__description')
 // @todo: Открытие попапа для редактирования профиля
-document.addEventListener('click', (evt) => {
-  if (evt.target.classList.contains('profile__edit-button')) {
-    nameInput.value = document.querySelector('.profile__title').textContent
-    jobInput.value = document.querySelector('.profile__description').textContent
-    openModal(popupTypeProfileEdit);
-  }
+editProfileButton.addEventListener('click', () => {
+  nameInput.value = profileTitle.textContent
+  jobInput.value = profileDescription.textContent
+  openModal(popupTypeProfileEdit);
 });
+
 
 // @todo: Функция изменения профиляn
 // Находим форму в DOM
@@ -34,8 +51,6 @@ const profileForm = document.querySelector('.popup_type_edit').querySelector('.p
 // Находим поля формы в DOM
 const nameInput = profileForm.querySelector('.popup__input_type_name')
 const jobInput = profileForm.querySelector('.popup__input_type_description')
-const profileTitle = document.querySelector('.profile__title')
-const profileDescription = document.querySelector('.profile__description')
 
 const editProfileForm = (evt) => {
   evt.preventDefault(); // Эта строчка отменяет стандартную отправку формы.
@@ -49,15 +64,34 @@ const editProfileForm = (evt) => {
   closeModal(document.querySelector('.popup_type_edit'))
 }
 
+const popupTypeAddNewCard = document.querySelector('.popup_type_new-card')
+const cardForm = popupTypeAddNewCard.querySelector('.popup__form')
+
+// @todo: Обработа формы добавления карточки
+const inputCardTitle = document.querySelector('.popup__input_type_card-name')
+const inputCardImgLink = document.querySelector('.popup__input_type_url')
+const addCardFormSubmit = (evt) => {
+  evt.preventDefault(); // Эта строчка отменяет стандартную отправку формы.
+                                              // Так мы можем определить свою логику отправки.
+                                              // О том, как это делать, расскажем позже.
+  // Получите значение полей jobInput и nameInput из свойства value 
+  // Выберите элементы, куда должны быть вставлены значения полей
+  const inputCardForm = {name: inputCardTitle.value, link: inputCardImgLink.value }
+  // Вставьте новые значения с помощью textContent{
+  const newCard = createCard(inputCardForm, handleDeleteCard, openImagePopup, toggleLikeButton);
+  placesList.prepend(newCard)
+  cardForm.reset()
+  closeModal(popupTypeAddNewCard)
+}
+
 // Прикрепляем обработчик к форме:
 // он будет следить за событием “submit” - «отправка»
 profileForm.addEventListener('submit', editProfileForm);
 
+const addCardButton = document.querySelector('.profile__add-button')
 // @todo: Открытие попапа для добавления карточки
-document.addEventListener('click', (evt) => {
-  if (evt.target.classList.contains('profile__add-button')) {
-    openModal(popupTypeAddNewCard);
-  }
+addCardButton.addEventListener('click', () => {
+  openModal(popupTypeAddNewCard);
 });
 
 // Прикрепляем обработчик к форме:
