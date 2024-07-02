@@ -1,7 +1,7 @@
 import '../pages/index.css';
 import { initialCards } from './cards.js';
 import { createCard, handleDeleteCard, toggleLikeButton } from './card.js'
-import { openModal, closeModal, popupTypeProfileEdit, closePopupOnOverlayClick } from './modal.js'
+import { openModal, closeModal, closePopupOnOverlayClick } from './modal.js'
 
 
 const placesList = document.querySelector('.places__list');
@@ -34,6 +34,7 @@ popups.forEach((popup) => {
   popup.addEventListener('click', closePopupOnOverlayClick)
 })
 
+const popupTypeProfileEdit = document.querySelector('.popup_type_edit')
 const editProfileButton = document.querySelector('.profile__edit-button')
 const profileTitle = document.querySelector('.profile__title')
 const profileDescription = document.querySelector('.profile__description')

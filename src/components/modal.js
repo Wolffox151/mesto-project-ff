@@ -4,9 +4,6 @@ export const openModal = (popup) => {
   document.addEventListener('keyup', closePopupOnEscape);
 }
 
-
-export const popupTypeProfileEdit = document.querySelector('.popup_type_edit')
-
 export const closeModal = (popup) => {
   popup.classList.remove('popup_is-opened');
   document.removeEventListener('keyup', closePopupOnEscape);
