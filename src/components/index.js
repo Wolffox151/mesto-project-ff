@@ -47,7 +47,7 @@ editProfileButton.addEventListener('click', () => {
 
 // @todo: Функция изменения профиляn
 // Находим форму в DOM
-const profileForm = document.querySelector('.popup_type_edit').querySelector('.popup__form')
+const profileForm = popupTypeProfileEdit.querySelector('.popup__form')
 // Находим поля формы в DOM
 const nameInput = profileForm.querySelector('.popup__input_type_name')
 const jobInput = profileForm.querySelector('.popup__input_type_description')
@@ -61,7 +61,7 @@ const editProfileForm = (evt) => {
   profileTitle.textContent = nameInput.value
   profileDescription.textContent = jobInput.value
   // Вставьте новые значения с помощью textContent
-  closeModal(document.querySelector('.popup_type_edit'))
+  closeModal(popupTypeProfileEdit)
 }
 
 const popupTypeAddNewCard = document.querySelector('.popup_type_new-card')

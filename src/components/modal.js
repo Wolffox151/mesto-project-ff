@@ -1,6 +1,6 @@
 // @todo: Открытие попапа
 export const openModal = (popup) => {
-	popup.classList.add('popup_is-opened');
+  popup.classList.add('popup_is-opened');
   document.addEventListener('keyup', closePopupOnEscape);
 }
 
@@ -8,7 +8,7 @@ export const openModal = (popup) => {
 export const popupTypeProfileEdit = document.querySelector('.popup_type_edit')
 
 export const closeModal = (popup) => {
-	popup.classList.remove('popup_is-opened');
+  popup.classList.remove('popup_is-opened');
   document.removeEventListener('keyup', closePopupOnEscape);
 }
 
