@@ -54,11 +54,6 @@ const nameInput = profileForm.querySelector('.popup__input_type_name')
 const jobInput = profileForm.querySelector('.popup__input_type_description')
 
 const editProfileForm = (evt) => {
-  evt.preventDefault(); // Эта строчка отменяет стандартную отправку формы.
-                                              // Так мы можем определить свою логику отправки.
-                                              // О том, как это делать, расскажем позже.
-  // Получите значение полей jobInput и nameInput из свойства value 
-  // Выберите элементы, куда должны быть вставлены значения полей
   profileTitle.textContent = nameInput.value
   profileDescription.textContent = jobInput.value
   // Вставьте новые значения с помощью textContent
@@ -72,11 +67,6 @@ const cardForm = popupTypeAddNewCard.querySelector('.popup__form')
 const inputCardTitle = document.querySelector('.popup__input_type_card-name')
 const inputCardImgLink = document.querySelector('.popup__input_type_url')
 const addCardFormSubmit = (evt) => {
-  evt.preventDefault(); // Эта строчка отменяет стандартную отправку формы.
-                                              // Так мы можем определить свою логику отправки.
-                                              // О том, как это делать, расскажем позже.
-  // Получите значение полей jobInput и nameInput из свойства value 
-  // Выберите элементы, куда должны быть вставлены значения полей
   const inputCardForm = {name: inputCardTitle.value, link: inputCardImgLink.value }
   // Вставьте новые значения с помощью textContent{
   const newCard = createCard(inputCardForm, handleDeleteCard, openImagePopup, toggleLikeButton);
@@ -98,3 +88,46 @@ addCardButton.addEventListener('click', () => {
 // Прикрепляем обработчик к форме:
 // он будет следить за событием “submit” - «отправка»
 cardForm.addEventListener('submit', addCardFormSubmit);
+
+const checkInputVadility = (inputElement) => {
+  if (inputElement.validity.valid) {
+    return true
+  }
+  else {
+    return false
+  }
+}
+
+const setEventListeners = (formElement) => {
+  const inputList = Array.from(formElement.querySelectorAll('.popup__input'))
+  inputList.forEach((inputElement) => {
+
+    inputElement.addEventListener('input', (evt) => {
+      if (!checkInputVadility(inputElement)) {
+        console.log(inputElement.closest('.popup__eror'))
+        inputElement.classList.add('popup__input_type_error')
+        inputElement.nextElementSibling.classList.add('popup__error_visible')
+      }
+      else {
+        inputElement.classList.remove('popup__input_type_error')
+        inputElement.nextElementSibling.classList.remove('popup__error_visible')
+      }
+    })
+  })
+}
+
+
+const enableValidation = (formSelector, inputSelector) => {
+  const formList = Array.from(document.querySelectorAll(`${Object.values(formSelector)[0]}`))
+  formList.forEach((formElement) => {
+    formElement.addEventListener('submit', (evt) => {
+      evt.preventDefault();
+    })
+    setEventListeners(formElement)
+  })
+}
+
+enableValidation({
+    formSelector: '.popup__form',
+    inputSelector: '.popup__input',
+  });
