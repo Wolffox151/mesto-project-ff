@@ -128,8 +128,8 @@ const toggleButtonState = (formElement, inputList, submitButtonSelector, inactiv
 
 const setEventListeners = (formElement, inputSelector, inputErrorClass, errorClass, submitButtonSelector, inactiveButtonClass) => {
   const inputList = Array.from(formElement.querySelectorAll(`${inputSelector}`))
+  toggleButtonState(formElement, inputList, submitButtonSelector, inactiveButtonClass)
   inputList.forEach((inputElement) => {
-    toggleButtonState(formElement, inputList, submitButtonSelector, inactiveButtonClass)
     inputElement.addEventListener('input', () => {
       checkInputVadility(formElement, inputElement, inputErrorClass, errorClass)
       toggleButtonState(formElement, inputList, submitButtonSelector, inactiveButtonClass)
@@ -150,7 +150,7 @@ const enableValidation = (validateParams) => {
     formElement.addEventListener('submit', (evt) => {
       evt.preventDefault()
     })
-  setEventListeners(formElement, inputSelector, inputErrorClass, errorClass, submitButtonSelector, inactiveButtonClass)
+    setEventListeners(formElement, inputSelector, inputErrorClass, errorClass, submitButtonSelector, inactiveButtonClass)
   })
 }
 
