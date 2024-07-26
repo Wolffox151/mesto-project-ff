@@ -2,6 +2,7 @@ import '../pages/index.css';
 import { initialCards } from './cards.js';
 import { createCard, handleDeleteCard, toggleLikeButton } from './card.js'
 import { openModal, closeModal, closePopupOnOverlayClick } from './modal.js'
+import { enableValidation, clearValidation } from './validation.js';
 
 
 const placesList = document.querySelector('.places__list');
@@ -38,10 +39,12 @@ const popupTypeProfileEdit = document.querySelector('.popup_type_edit')
 const editProfileButton = document.querySelector('.profile__edit-button')
 const profileTitle = document.querySelector('.profile__title')
 const profileDescription = document.querySelector('.profile__description')
+const profileFormLabelList = popupTypeProfileEdit.querySelectorAll('.popup__label')
 // @todo: Открытие попапа для редактирования профиля
 editProfileButton.addEventListener('click', () => {
   nameInput.value = profileTitle.textContent
   jobInput.value = profileDescription.textContent
+  clearValidation(popupTypeProfileEdit, profileFormLabelList)
   openModal(popupTypeProfileEdit);
 });
 
@@ -53,6 +56,8 @@ const profileForm = popupTypeProfileEdit.querySelector('.popup__form')
 const nameInput = profileForm.querySelector('.popup__input_type_name')
 const jobInput = profileForm.querySelector('.popup__input_type_description')
 
+nameInput.value = profileTitle.textContent
+jobInput.value = profileDescription.textContent
 const editProfileForm = (evt) => {
   profileTitle.textContent = nameInput.value
   profileDescription.textContent = jobInput.value
@@ -80,79 +85,18 @@ const addCardFormSubmit = (evt) => {
 profileForm.addEventListener('submit', editProfileForm);
 
 const addCardButton = document.querySelector('.profile__add-button')
+const addCardPupupLabelList = popupTypeAddNewCard.querySelectorAll('.popup__label')
 // @todo: Открытие попапа для добавления карточки
 addCardButton.addEventListener('click', () => {
+  inputCardTitle.value = ''
+  inputCardImgLink.value = ''
+  clearValidation(popupTypeAddNewCard, addCardPupupLabelList)
   openModal(popupTypeAddNewCard);
 });
 
 // Прикрепляем обработчик к форме:
 // он будет следить за событием “submit” - «отправка»
 cardForm.addEventListener('submit', addCardFormSubmit);
-
-const showInputError = (formElement, inputElement, inputErrorClass, errorClass, errorMessage) => {
-  const errorElement = formElement.querySelector(`.${inputElement.id}_error`)
-  inputElement.classList.add(`${inputErrorClass}`)
-  errorElement.textContent = errorMessage
-  errorElement.classList.add(`${errorClass}`)
-}
-
-const hideInputError = (formElement, inputElement, inputErrorClass, errorClass) => { 
-  const errorElement = formElement.querySelector(`.${inputElement.id}_error`)
-  inputElement.classList.remove(`${inputErrorClass}`)
-  errorElement.classList.remove(`${errorClass}`)
-  errorElement.textContent = ''
-}
-
-const checkInputVadility = (formElement, inputElement, inputErrorClass, errorClass) => {
-  if (!inputElement.validity.valid) {
-    showInputError(formElement, inputElement, inputErrorClass, errorClass, inputElement.validationMessage)
-  } else {
-    hideInputError(formElement, inputElement, inputErrorClass, errorClass)  
-  }
-}
-
-const hasInvalidInput = (inputList) => {
-  return inputList.some((inputElement) => {
-    return !inputElement.validity.valid
-  })
-}
-
-const toggleButtonState = (formElement, inputList, submitButtonSelector, inactiveButtonClass) => {
-  if (hasInvalidInput(inputList)) {
-    formElement.querySelector(`${submitButtonSelector}`).classList.add(inactiveButtonClass)
-  }
-  else {
-    formElement.querySelector(`${submitButtonSelector}`).classList.remove(inactiveButtonClass)
-  }
-}
-
-const setEventListeners = (formElement, inputSelector, inputErrorClass, errorClass, submitButtonSelector, inactiveButtonClass) => {
-  const inputList = Array.from(formElement.querySelectorAll(`${inputSelector}`))
-  toggleButtonState(formElement, inputList, submitButtonSelector, inactiveButtonClass)
-  inputList.forEach((inputElement) => {
-    inputElement.addEventListener('input', () => {
-      checkInputVadility(formElement, inputElement, inputErrorClass, errorClass)
-      toggleButtonState(formElement, inputList, submitButtonSelector, inactiveButtonClass)
-    })
-  })
-}
-
-const enableValidation = (validateParams) => {
-  const formSelector = Object.values(validateParams)[0]
-  const inputSelector = Object.values(validateParams)[1]
-  const submitButtonSelector = Object.values(validateParams)[2]
-  const inactiveButtonClass = Object.values(validateParams)[3]
-  const inputErrorClass = Object.values(validateParams)[4]
-  const errorClass = Object.values(validateParams)[5]
-
-  const formList = Array.from(document.querySelectorAll(`${formSelector}`))
-  formList.forEach((formElement) => {
-    formElement.addEventListener('submit', (evt) => {
-      evt.preventDefault()
-    })
-    setEventListeners(formElement, inputSelector, inputErrorClass, errorClass, submitButtonSelector, inactiveButtonClass)
-  })
-}
 
 enableValidation({
   formSelector: '.popup__form',
