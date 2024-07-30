@@ -15,7 +15,7 @@ const hideInputError = (formElement, inputElement, inputErrorClass, errorClass) 
 }
 
 const checkInputVadility = (formElement, inputElement, inputErrorClass, errorClass) => {
-  if (inputElement.validity.patternMissmatch) {
+  if (inputElement.validity.patternMismatch) {
     inputElement.setCustomValidity(inputElement.dataset.errorMessage)
     showInputError(formElement, inputElement, inputErrorClass, errorClass, inputElement.dataset.errorMessage)
   } else {
