@@ -15,6 +15,14 @@ const hideInputError = (formElement, inputElement, inputErrorClass, errorClass) 
 }
 
 const checkInputVadility = (formElement, inputElement, inputErrorClass, errorClass) => {
+  if (inputElement.validity.patternMissmatch) {
+    inputElement.setCustomValidity(inputElement.dataset.errorMessage)
+    showInputError(formElement, inputElement, inputErrorClass, errorClass, inputElement.dataset.errorMessage)
+  } else {
+    hideInputError(formElement, inputElement, inputErrorClass, errorClass)
+    inputElement.setCustomValidity("")
+  }
+
   if (!inputElement.validity.valid) {
     showInputError(formElement, inputElement, inputErrorClass, errorClass, inputElement.validationMessage)
   } else {
@@ -27,6 +35,7 @@ const hasInvalidInput = (inputList) => {
     return !inputElement.validity.valid;
   });
 };
+
 
 
 const toggleButtonState = (formElement, inputList, submitButtonSelector, inactiveButtonClass) => {
