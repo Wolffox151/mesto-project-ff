@@ -21,7 +21,7 @@ const checkInputVadility = (formElement, inputElement, inputErrorClass, errorCla
   } else {
     hideInputError(formElement, inputElement, inputErrorClass, errorClass)
     inputElement.setCustomValidity("")
-  }
+}
 
   if (!inputElement.validity.valid) {
     showInputError(formElement, inputElement, inputErrorClass, errorClass, inputElement.validationMessage)
