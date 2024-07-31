@@ -3,6 +3,7 @@ import { initialCards } from './cards.js';
 import { createCard, handleDeleteCard, toggleLikeButton } from './card.js'
 import { openModal, closeModal, closePopupOnOverlayClick } from './modal.js'
 import { enableValidation, clearValidation } from './validation.js';
+import { getUserInfo } from './api.js'
 
 
 const placesList = document.querySelector('.places__list');
@@ -106,3 +107,5 @@ enableValidation({
   inputErrorClass: 'popup__input_type_error',
   errorClass: 'popup__error_visible',
 });
+
+getUserInfo()
