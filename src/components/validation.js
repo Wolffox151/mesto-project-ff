@@ -77,11 +77,15 @@ const enableValidation = (validateParams) => {
   })
 }
 
-const clearValidation = (formElement, labelList) => {
-  labelList.forEach((labelElement) => {
+const clearValidation = (formElement, validationconfig) => {
+  validationconfig[0].forEach((labelElement) => {
     labelElement.querySelector('.popup__input').classList.remove('popup__input_type_error')
     labelElement.querySelector('.popup__error').classList.remove('popup__error_visible')
   })
-  formElement.querySelector('.popup__button').disabled=true;
-  formElement.querySelector('.popup__button').classList.add('popup__button_disabled')
+  formElement.querySelector('.popup__button').disabled=validationconfig[1];
+  if (formElement.querySelector('.popup__button').disabled) {
+    formElement.querySelector('.popup__button').classList.add('popup__button_disabled')
+  } else {
+    formElement.querySelector('.popup__button').classList.remove('popup__button_disabled')
+  }
 }

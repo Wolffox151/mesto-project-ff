@@ -44,7 +44,7 @@ const profileFormLabelList = popupTypeProfileEdit.querySelectorAll('.popup__labe
 editProfileButton.addEventListener('click', () => {
   nameInput.value = profileTitle.textContent
   jobInput.value = profileDescription.textContent
-  clearValidation(popupTypeProfileEdit, profileFormLabelList)
+  clearValidation(popupTypeProfileEdit, [profileFormLabelList, false])
   openModal(popupTypeProfileEdit);
 });
 
@@ -90,7 +90,7 @@ const addCardPupupLabelList = popupTypeAddNewCard.querySelectorAll('.popup__labe
 addCardButton.addEventListener('click', () => {
   inputCardTitle.value = ''
   inputCardImgLink.value = ''
-  clearValidation(popupTypeAddNewCard, addCardPupupLabelList)
+  clearValidation(popupTypeAddNewCard, [addCardPupupLabelList, true])
   openModal(popupTypeAddNewCard);
 });
 
