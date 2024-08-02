@@ -23,8 +23,6 @@ export const createCard = (data, onDelete, onImage, onLike) => {
   likeButton.addEventListener('click', () => {
     onLike(likeButton)
   })
-
-
   
   return newCard;
 }

@@ -3,7 +3,7 @@ import { initialCards } from './cards.js';
 import { createCard, handleDeleteCard, toggleLikeButton } from './card.js'
 import { openModal, closeModal, closePopupOnOverlayClick } from './modal.js'
 import { enableValidation, clearValidation } from './validation.js';
-import { getUserInfo } from './api.js'
+import { getUserInfo, postUserProfile, getCards, postUserCard } from './api.js'
 
 
 const placesList = document.querySelector('.places__list');
@@ -20,13 +20,6 @@ const openImagePopup = (data) => {
   openModal(imagePopup)
 }
 
-// @todo: Вывести карточки на страницу
-initialCards.forEach((data) => {
-  const newCard = createCard(data, handleDeleteCard, openImagePopup, toggleLikeButton);
-  placesList.append(newCard)
-})
-
-
 // @todo: Список попапов
 const popups = document.querySelectorAll('.popup');
 
@@ -40,6 +33,7 @@ const popupTypeProfileEdit = document.querySelector('.popup_type_edit')
 const editProfileButton = document.querySelector('.profile__edit-button')
 const profileTitle = document.querySelector('.profile__title')
 const profileDescription = document.querySelector('.profile__description')
+const profileImg = document.querySelector('.profile__image')
 const profileFormLabelList = popupTypeProfileEdit.querySelectorAll('.popup__label')
 // @todo: Открытие попапа для редактирования профиля
 editProfileButton.addEventListener('click', () => {
@@ -60,6 +54,7 @@ const jobInput = profileForm.querySelector('.popup__input_type_description')
 nameInput.value = profileTitle.textContent
 jobInput.value = profileDescription.textContent
 const editProfileForm = (evt) => {
+  postUserProfile(profileTitle, profileDescription, nameInput.value, jobInput.value)
   profileTitle.textContent = nameInput.value
   profileDescription.textContent = jobInput.value
   // Вставьте новые значения с помощью textContent
@@ -75,6 +70,7 @@ const inputCardImgLink = document.querySelector('.popup__input_type_url')
 const addCardFormSubmit = (evt) => {
   const inputCardForm = {name: inputCardTitle.value, link: inputCardImgLink.value }
   // Вставьте новые значения с помощью textContent{
+  postUserCard(inputCardTitle.value, inputCardImgLink.value)
   const newCard = createCard(inputCardForm, handleDeleteCard, openImagePopup, toggleLikeButton);
   placesList.prepend(newCard)
   cardForm.reset()
@@ -108,4 +104,26 @@ enableValidation({
   errorClass: 'popup__error_visible',
 });
 
-getUserInfo()
+const fillDataUserProfile = (profileTitle, getUserInfo) => {
+  getUserInfo().then((response) => {
+    profileTitle.textContent = response.name;
+    profileDescription.textContent = response.about
+    profileImg.style.backgroundImage = `url(${response.avatar})`
+  });
+};
+
+fillDataUserProfile(profileTitle, getUserInfo)
+
+const loadCards = (placesList, getCards, createCard) => {
+  getCards().then((response) => {
+    response.forEach((cardData) => {
+      const newCard = createCard(cardData, handleDeleteCard, openImagePopup, toggleLikeButton);
+      placesList.append(newCard)
+    })
+  }).catch((error) => {
+    console.error('Ошибка при загрузке карт:', error); // Обрабатываем возможные ошибки
+  });
+}
+
+
+loadCards(placesList, getCards, createCard)
