@@ -54,7 +54,7 @@ const jobInput = profileForm.querySelector('.popup__input_type_description')
 nameInput.value = profileTitle.textContent
 jobInput.value = profileDescription.textContent
 const editProfileForm = (evt) => {
-  postUserProfile(profileTitle, profileDescription, nameInput.value, jobInput.value)
+  postUserProfile(nameInput.value, jobInput.value)
   profileTitle.textContent = nameInput.value
   profileDescription.textContent = jobInput.value
   // Вставьте новые значения с помощью textContent
