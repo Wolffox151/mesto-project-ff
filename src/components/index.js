@@ -3,7 +3,7 @@ import { initialCards } from './cards.js';
 import { createCard, handleDeleteCard, toggleLikeButton } from './card.js'
 import { openModal, closeModal, closePopupOnOverlayClick } from './modal.js'
 import { enableValidation, clearValidation } from './validation.js';
-import { getUserInfo, postUserProfile, getCards, postUserCard } from './api.js'
+import { getUserInfo, postUserProfile, getCards, postUserCard, deleteCardApi , addLikeCardApi, removeLikeCardApi} from './api.js'
 
 
 const placesList = document.querySelector('.places__list');
@@ -53,10 +53,12 @@ const jobInput = profileForm.querySelector('.popup__input_type_description')
 
 nameInput.value = profileTitle.textContent
 jobInput.value = profileDescription.textContent
-const editProfileForm = (evt) => {
+const editProfileForm = () => {
   postUserProfile(nameInput.value, jobInput.value)
-  profileTitle.textContent = nameInput.value
-  profileDescription.textContent = jobInput.value
+  .then(() => {
+    profileTitle.textContent = nameInput.value
+    profileDescription.textContent = jobInput.value
+  })
   // Вставьте новые значения с помощью textContent
   closeModal(popupTypeProfileEdit)
 }
@@ -67,13 +69,15 @@ const cardForm = popupTypeAddNewCard.querySelector('.popup__form')
 // @todo: Обработа формы добавления карточки
 const inputCardTitle = document.querySelector('.popup__input_type_card-name')
 const inputCardImgLink = document.querySelector('.popup__input_type_url')
-const addCardFormSubmit = (evt) => {
-  const inputCardForm = {name: inputCardTitle.value, link: inputCardImgLink.value }
-  // Вставьте новые значения с помощью textContent{
+const addCardFormSubmit = () => {
   postUserCard(inputCardTitle.value, inputCardImgLink.value)
-  const newCard = createCard(inputCardForm, handleDeleteCard, openImagePopup, toggleLikeButton);
-  placesList.prepend(newCard)
-  cardForm.reset()
+  .then(() => {
+    getCards().then((response) => {
+      const newCard = createCard(response[0], handleDeleteCard, deleteCardApi, openImagePopup, toggleLikeButton);
+      placesList.prepend(newCard)
+      cardForm.reset()
+    })
+  })
   closeModal(popupTypeAddNewCard)
 }
 
@@ -104,20 +108,30 @@ enableValidation({
   errorClass: 'popup__error_visible',
 });
 
+let currentUserId = ''
+
 const fillDataUserProfile = (profileTitle, getUserInfo) => {
   getUserInfo().then((response) => {
+    currentUserId = response['_id']
     profileTitle.textContent = response.name;
     profileDescription.textContent = response.about
     profileImg.style.backgroundImage = `url(${response.avatar})`
-  });
+  })
+  .catch((error) => {
+    console.error('Ошибка при загрузке данных профиля', error)
+  })
 };
+
 
 fillDataUserProfile(profileTitle, getUserInfo)
 
 const loadCards = (placesList, getCards, createCard) => {
   getCards().then((response) => {
     response.forEach((cardData) => {
-      const newCard = createCard(cardData, handleDeleteCard, openImagePopup, toggleLikeButton);
+      const newCard = createCard(cardData, handleDeleteCard, deleteCardApi, openImagePopup, toggleLikeButton);
+      if(currentUserId!==cardData.owner['_id']) {
+        newCard.querySelector('.card__delete-button').remove()
+      }
       placesList.append(newCard)
     })
   }).catch((error) => {
@@ -125,5 +139,5 @@ const loadCards = (placesList, getCards, createCard) => {
   });
 }
 
-
 loadCards(placesList, getCards, createCard)
+

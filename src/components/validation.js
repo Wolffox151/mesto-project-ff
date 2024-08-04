@@ -61,12 +61,7 @@ const setEventListeners = (formElement, inputSelector, inputErrorClass, errorCla
 }
 
 const enableValidation = (validateParams) => {
-  const formSelector = Object.values(validateParams)[0]
-  const inputSelector = Object.values(validateParams)[1]
-  const submitButtonSelector = Object.values(validateParams)[2]
-  const inactiveButtonClass = Object.values(validateParams)[3]
-  const inputErrorClass = Object.values(validateParams)[4]
-  const errorClass = Object.values(validateParams)[5]
+  const { formSelector, inputSelector, submitButtonSelector, inactiveButtonClass, inputErrorClass, errorClass } = validateParams
 
   const formList = Array.from(document.querySelectorAll(`${formSelector}`))
     formList.forEach((formElement) => {

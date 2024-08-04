@@ -117,3 +117,63 @@ export const postUserCard = (inputCardName, inputCardLink) => {
     return result;
   });
 }
+
+export const deleteCardApi = (cardId) => {
+  return fetch(`${config.baseUrl}/cards/${cardId}`, {
+    method: 'DELETE',
+    headers: {
+      authorization: config.headers.authorization,
+      'Content-Type': config.headers['Content-Type'],
+    },
+  })
+  .then((res) => {
+    if (res.ok) {
+      return res.json();
+    } else {
+      return console.log('Ошибка удаления карточки:', res.status);
+    }
+  })
+  .then((result) => {
+    return result;
+  })
+}
+
+export const addLikeCardApi = (cardId) => {
+  return fetch(`${config.baseUrl}/cards/likes/${cardId}`, {
+    method: 'PUT',
+    headers: {
+      authorization: config.headers.authorization,
+      'Content-Type': config.headers['Content-Type'],
+    },
+  })
+  .then((res) => {
+    if (res.ok) {
+      return res.json();
+    } else {
+      return console.log('Ошибка лайка карточки:', res.status);
+    }
+  })
+  .then((result) => {
+    return result;
+  });
+}
+
+export const removeLikeCardApi = (cardId) => {
+  return fetch(`${config.baseUrl}/cards/likes/${cardId}`, {
+    method: 'DELETE',
+    headers: {
+      authorization: config.headers.authorization,
+      'Content-Type': config.headers['Content-Type'],
+    },
+  })
+  .then((res) => {
+    if (res.ok) {
+      return res.json();
+    } else {
+      return console.log('Ошибка лайка карточки:', res.status);
+    }
+  })
+  .then((result) => {
+    return result;
+  });
+}
