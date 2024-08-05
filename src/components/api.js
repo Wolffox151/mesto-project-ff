@@ -6,28 +6,6 @@ const config = {
   }
 }
 
-// export const getUserInfo = () => {
-//   return fetch(`${config.baseUrl}/users/me`, {
-//     headers: {
-//       authorization: config.headers.authorization,
-//       'Content-Type': config.headers['Content-Type'],
-//     },
-//     method: 'GET',
-//   })
-
-//   .then ((res) => {
-//     if (res.ok) {
-//       return res.json();
-//     }
-//     else {
-//       return console.log(`Ошибка запроса к серверу:`, res.status)
-//     }
-//   })
-//   .then ((result) => {
-//     return result
-//   })
-// }
-
 export const getUserInfo = () => {
   return fetch(`${config.baseUrl}/users/me`, {
     headers: {
