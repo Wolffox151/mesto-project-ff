@@ -3,18 +3,19 @@ import { deleteCardApi } from "./api";
 // @todo: Функция создания карточки
 const templateCard = document.querySelector('#card-template').content.querySelector('.places__item');
 // @todo: DOM узлы
-export const createCard = (data, onDelete, deleteCardApi, onImage, onLike) => {
+export const createCard = (data, onDelete, deleteCardApi, onImage, onLike, addLikeCardApi, removeLikeCardApi) => {
   const newCard = templateCard.cloneNode(true);
   const imageCard = newCard.querySelector('.card__image')
   const titleCard = newCard.querySelector('.card__title');
   const deleteButton = newCard.querySelector('.card__delete-button')
   const likeButton = newCard.querySelector('.card__like-button')
   const likesCounterNode = newCard.querySelector('.card__likes-counter')
+  console.log(data)
 
   imageCard.src = data.link
   imageCard.alt = `Изображение ${data.name}`
   titleCard.textContent = data.name;
-  likesCounterNode.textContent = `${data.likes.length}`
+  likesCounterNode.textContent = data.likes.length  
   
   deleteButton.addEventListener('click', () => {
     onDelete(newCard, data['_id'])
@@ -25,7 +26,7 @@ export const createCard = (data, onDelete, deleteCardApi, onImage, onLike) => {
   })
 
   likeButton.addEventListener('click', () => {
-    onLike(likeButton)
+    onLike(likeButton, data['_id'], addLikeCardApi, removeLikeCardApi, likesCounterNode)
   })
   
   return newCard;
@@ -39,6 +40,16 @@ export const handleDeleteCard = (card, cardId) => {
 
 // @todo: Лайк карточки
 
-export const toggleLikeButton = (likeButton) => {
-  likeButton.classList.toggle('card__like-button_is-active')
+export const toggleLikeButton = (likeButton, cardId, addLikeCardApi, removeLikeCardApi, likesCounterNode) => {
+  if(!likeButton.classList.contains('card__like-button_is-active')) {
+    addLikeCardApi(cardId)
+    .then(() => {
+      likeButton.classList.add('card__like-button_is-active')
+      likesCounterNode.textContent = `${Number(likesCounterNode.textContent)+1}`
+    })
+  } else {
+    removeLikeCardApi(cardId)
+    .then(() => likeButton.classList.remove('card__like-button_is-active'))
+    likesCounterNode.textContent = `${Number(likesCounterNode.textContent)-1}`
+  }
 }

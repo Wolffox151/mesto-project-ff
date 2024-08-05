@@ -73,7 +73,7 @@ const addCardFormSubmit = () => {
   postUserCard(inputCardTitle.value, inputCardImgLink.value)
   .then(() => {
     getCards().then((response) => {
-      const newCard = createCard(response[0], handleDeleteCard, deleteCardApi, openImagePopup, toggleLikeButton);
+      const newCard = createCard(response[0], handleDeleteCard, deleteCardApi, openImagePopup, toggleLikeButton, addLikeCardApi, removeLikeCardApi);
       placesList.prepend(newCard)
       cardForm.reset()
     })
@@ -128,10 +128,15 @@ fillDataUserProfile(profileTitle, getUserInfo)
 const loadCards = (placesList, getCards, createCard) => {
   getCards().then((response) => {
     response.forEach((cardData) => {
-      const newCard = createCard(cardData, handleDeleteCard, deleteCardApi, openImagePopup, toggleLikeButton);
+      const newCard = createCard(cardData, handleDeleteCard, deleteCardApi, openImagePopup, toggleLikeButton, addLikeCardApi, removeLikeCardApi);
       if(currentUserId!==cardData.owner['_id']) {
         newCard.querySelector('.card__delete-button').remove()
       }
+      cardData.likes.forEach((likedUser) => {
+        if (likedUser['_id']==currentUserId) {
+          newCard.querySelector('.card__like-button').classList.add('card__like-button_is-active')
+        }
+      })
       placesList.append(newCard)
     })
   }).catch((error) => {
