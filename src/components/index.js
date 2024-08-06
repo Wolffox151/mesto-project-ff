@@ -1,9 +1,8 @@
 import '../pages/index.css';
-import { initialCards } from './cards.js';
 import { createCard, handleDeleteCard, toggleLikeButton } from './card.js'
 import { openModal, closeModal, closePopupOnOverlayClick } from './modal.js'
 import { enableValidation, clearValidation } from './validation.js';
-import { getUserInfo, postUserProfile, getCards, postUserCard, deleteCardApi , addLikeCardApi, removeLikeCardApi, getInitialInfo} from './api.js'
+import { postUserProfile, getCards, postUserCard, getInitialInfo} from './api.js'
 
 
 const placesList = document.querySelector('.places__list');
@@ -73,7 +72,7 @@ const addCardFormSubmit = () => {
   postUserCard(inputCardTitle.value, inputCardImgLink.value)
   .then(() => {
     getCards().then((response) => {
-      const newCard = createCard(response[0], handleDeleteCard, deleteCardApi, openImagePopup, toggleLikeButton, addLikeCardApi, removeLikeCardApi);
+      const newCard = createCard(response[0], response[0]['owner']['_id'], handleDeleteCard, openImagePopup, toggleLikeButton);
       placesList.prepend(newCard)
       cardForm.reset()
     })
@@ -115,24 +114,9 @@ const fillUserProfile = (userData) => {
   profileImg.style.backgroundImage = `url(${userData.avatar})`
 };
 
-// const loadCards = (placesList, createCard) => {
-//     cardsData.forEach((cardData) => {
-//       const newCard = createCard(cardData, handleDeleteCard, deleteCardApi, openImagePopup, toggleLikeButton, addLikeCardApi, removeLikeCardApi);
-//       if(userId!==cardData.owner['_id']) {
-//         newCard.querySelector('.card__delete-button').remove()
-//       }
-//       cardData.likes.forEach((likedUser) => {
-//         if (likedUser['_id']==currentUserId) {
-//           newCard.querySelector('.card__like-button').classList.add('card__like-button_is-active')
-//         }
-//       })
-//       placesList.append(newCard)
-//     })
-// }
-
 const loadCards = (cardsData, userId) => {
   cardsData.forEach((cardData) => {
-    placesList.prepend(createCard(cardData, handleDeleteCard, deleteCardApi, openImagePopup, toggleLikeButton, addLikeCardApi, removeLikeCardApi));
+    placesList.append(createCard(cardData, userId, handleDeleteCard, openImagePopup, toggleLikeButton));
   })
 }
 
