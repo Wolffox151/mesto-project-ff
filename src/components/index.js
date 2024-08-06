@@ -108,28 +108,17 @@ enableValidation({
   errorClass: 'popup__error_visible',
 });
 
-// let currentUserId = ''
 
-// const fillDataUserProfile = (profileTitle, getUserInfo) => {
-//   getUserInfo().then((response) => {
-//     currentUserId = response['_id']
-//     profileTitle.textContent = response.name;
-//     profileDescription.textContent = response.about
-//     profileImg.style.backgroundImage = `url(${response.avatar})`
-//   })
-//   .catch((error) => {
-//     console.error('Ошибка при загрузке данных профиля', error)
-//   })
-// };
+const fillUserProfile = (userData) => {
+  profileTitle.textContent = userData.name;
+  profileDescription.textContent = userData.about
+  profileImg.style.backgroundImage = `url(${userData.avatar})`
+};
 
-
-// fillDataUserProfile(profileTitle, getUserInfo)
-
-// const loadCards = (placesList, getCards, createCard) => {
-//   getCards().then((response) => {
-//     response.forEach((cardData) => {
+// const loadCards = (placesList, createCard) => {
+//     cardsData.forEach((cardData) => {
 //       const newCard = createCard(cardData, handleDeleteCard, deleteCardApi, openImagePopup, toggleLikeButton, addLikeCardApi, removeLikeCardApi);
-//       if(currentUserId!==cardData.owner['_id']) {
+//       if(userId!==cardData.owner['_id']) {
 //         newCard.querySelector('.card__delete-button').remove()
 //       }
 //       cardData.likes.forEach((likedUser) => {
@@ -139,18 +128,19 @@ enableValidation({
 //       })
 //       placesList.append(newCard)
 //     })
-//   }).catch((error) => {
-//     console.error('Ошибка при загрузке карт:', error); // Обрабатываем возможные ошибки
-//   });
 // }
 
-// loadCards(placesList, getCards, createCard)
+const loadCards = (cardsData, userId) => {
+  cardsData.forEach((cardData) => {
+    placesList.prepend(createCard(cardData, handleDeleteCard, deleteCardApi, openImagePopup, toggleLikeButton, addLikeCardApi, removeLikeCardApi));
+  })
+}
 
 getInitialInfo()
 .then ((result) => {
   const [userData, cardsData] = result
   const userId = userData['_id']
-  // fillDataUserProfile(userData)
-  // loadCards(cardsData, userId)
+  fillUserProfile(userData)
+  loadCards(cardsData, userId)
 })
 .catch((error) => console.error(error))
