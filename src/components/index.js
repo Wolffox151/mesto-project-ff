@@ -3,7 +3,7 @@ import { initialCards } from './cards.js';
 import { createCard, handleDeleteCard, toggleLikeButton } from './card.js'
 import { openModal, closeModal, closePopupOnOverlayClick } from './modal.js'
 import { enableValidation, clearValidation } from './validation.js';
-import { getUserInfo, postUserProfile, getCards, postUserCard, deleteCardApi , addLikeCardApi, removeLikeCardApi} from './api.js'
+import { getUserInfo, postUserProfile, getCards, postUserCard, deleteCardApi , addLikeCardApi, removeLikeCardApi, getInitialInfo} from './api.js'
 
 
 const placesList = document.querySelector('.places__list');
@@ -108,41 +108,49 @@ enableValidation({
   errorClass: 'popup__error_visible',
 });
 
-let currentUserId = ''
+// let currentUserId = ''
 
-const fillDataUserProfile = (profileTitle, getUserInfo) => {
-  getUserInfo().then((response) => {
-    currentUserId = response['_id']
-    profileTitle.textContent = response.name;
-    profileDescription.textContent = response.about
-    profileImg.style.backgroundImage = `url(${response.avatar})`
-  })
-  .catch((error) => {
-    console.error('Ошибка при загрузке данных профиля', error)
-  })
-};
+// const fillDataUserProfile = (profileTitle, getUserInfo) => {
+//   getUserInfo().then((response) => {
+//     currentUserId = response['_id']
+//     profileTitle.textContent = response.name;
+//     profileDescription.textContent = response.about
+//     profileImg.style.backgroundImage = `url(${response.avatar})`
+//   })
+//   .catch((error) => {
+//     console.error('Ошибка при загрузке данных профиля', error)
+//   })
+// };
 
 
-fillDataUserProfile(profileTitle, getUserInfo)
+// fillDataUserProfile(profileTitle, getUserInfo)
 
-const loadCards = (placesList, getCards, createCard) => {
-  getCards().then((response) => {
-    response.forEach((cardData) => {
-      const newCard = createCard(cardData, handleDeleteCard, deleteCardApi, openImagePopup, toggleLikeButton, addLikeCardApi, removeLikeCardApi);
-      if(currentUserId!==cardData.owner['_id']) {
-        newCard.querySelector('.card__delete-button').remove()
-      }
-      cardData.likes.forEach((likedUser) => {
-        if (likedUser['_id']==currentUserId) {
-          newCard.querySelector('.card__like-button').classList.add('card__like-button_is-active')
-        }
-      })
-      placesList.append(newCard)
-    })
-  }).catch((error) => {
-    console.error('Ошибка при загрузке карт:', error); // Обрабатываем возможные ошибки
-  });
-}
+// const loadCards = (placesList, getCards, createCard) => {
+//   getCards().then((response) => {
+//     response.forEach((cardData) => {
+//       const newCard = createCard(cardData, handleDeleteCard, deleteCardApi, openImagePopup, toggleLikeButton, addLikeCardApi, removeLikeCardApi);
+//       if(currentUserId!==cardData.owner['_id']) {
+//         newCard.querySelector('.card__delete-button').remove()
+//       }
+//       cardData.likes.forEach((likedUser) => {
+//         if (likedUser['_id']==currentUserId) {
+//           newCard.querySelector('.card__like-button').classList.add('card__like-button_is-active')
+//         }
+//       })
+//       placesList.append(newCard)
+//     })
+//   }).catch((error) => {
+//     console.error('Ошибка при загрузке карт:', error); // Обрабатываем возможные ошибки
+//   });
+// }
 
-loadCards(placesList, getCards, createCard)
+// loadCards(placesList, getCards, createCard)
 
+getInitialInfo()
+.then ((result) => {
+  const [userData, cardsData] = result
+  const userId = userData['_id']
+  // fillDataUserProfile(userData)
+  // loadCards(cardsData, userId)
+})
+.catch((error) => console.error(error))

@@ -1,4 +1,4 @@
-import { deleteCardApi } from "./api";
+import { deleteCardApi, addLikeCardApi, removeLikeCardApi } from "./api";
 
 // @todo: Функция создания карточки
 const templateCard = document.querySelector('#card-template').content.querySelector('.places__item');
@@ -40,7 +40,7 @@ export const handleDeleteCard = (card, cardId) => {
 
 // @todo: Лайк карточки
 
-export const toggleLikeButton = (likeButton, cardId, addLikeCardApi, removeLikeCardApi, likesCounterNode) => {
+export const toggleLikeButton = (likeButton, cardId, likesCounterNode) => {
   if(!likeButton.classList.contains('card__like-button_is-active')) {
     addLikeCardApi(cardId)
     .then(() => {

@@ -6,152 +6,84 @@ const config = {
   }
 }
 
-export const getUserInfo = () => {
-  return fetch(`${config.baseUrl}/users/me`, {
-    headers: {
-      authorization: config.headers.authorization,
-      'Content-Type': config.headers['Content-Type'],
-    },
-    method: 'GET',
-  })
-
-  .then((res) => {
-    if (res.ok) {
-      return res.json();
-    } else {
-      return console.log('Ошибка запроса к серверу:', res.status);
-    }
-  })
-  .then((result) => {
-    return result;
-  });
-};
-
-export const getCards = () => {
-  return fetch(`${config.baseUrl}/cards`, {
-    headers: {
-      authorization: config.headers.authorization,
-      'Content-Type': config.headers['Content-Type'],
-    },
-    method: 'GET',
-  })
-  
-  .then((res) => {
-    if (res.ok) {
-      return res.json();
-    } else {
-      return console.log('Ошибка запроса к серверу:', res.status);
-    }
-  })
-  .then((result) => {
-    return result;
-  });
+const getResponseData = (res) => {
+  if (res.ok) {
+    return res.json()
+  } else {
+    Promise.reject(`Ошибка запроса к серверу: ${res.status}`);
+  }
 }
 
-export const postUserProfile = (inputName, inputDescription) => {
+export const getUserInfo = async () => {
+  return fetch(`${config.baseUrl}/users/me`, {
+    headers: config.headers,
+    method: 'GET',
+  })
+  .then((res) => getResponseData(res))
+};
+
+export const getCards = async () => {
+  return fetch(`${config.baseUrl}/cards`, {
+    headers: config.headers,
+    method: 'GET',
+  })
+
+  .then((res) => getResponseData(res))
+}
+
+export const getInitialInfo = () => {
+  return Promise.all([getUserInfo(), getCards()])
+}
+
+export const postUserProfile = async (inputName, inputDescription) => {
   return fetch(`${config.baseUrl}/users/me`, {
     method: 'PATCH',
-    headers: {
-      authorization: config.headers.authorization,
-      'Content-Type': config.headers['Content-Type'],
-    },
+    headers: config.headers,
     body: JSON.stringify({
       name: `${inputName}`,
       about: `${inputDescription}`,
     })
   })
-  .then((res) => {
-    if (res.ok) {
-      return res.json();
-    } else {
-      return console.log('Ошибка запроса к серверу:', res.status);
-    }
-  })
-  .then((result) => {
-    return result;
-  });
+
+  .then((res) => getResponseData(res))
 }
 
-export const postUserCard = (inputCardName, inputCardLink) => {
+export const postUserCard = async (inputCardName, inputCardLink) => {
   return fetch(`${config.baseUrl}/cards`, {
     method: 'POST',
-    headers: {
-      authorization: config.headers.authorization,
-      'Content-Type': config.headers['Content-Type'],
-    },
+    headers: config.headers,
     body: JSON.stringify({
       name: `${inputCardName}`,
       link: `${inputCardLink}`,
     })
   })
-  .then((res) => {
-    if (res.ok) {
-      return res.json();
-    } else {
-      return console.log('Ошибка запроса к серверу:', res.status);
-    }
-  })
-  .then((result) => {
-    return result;
-  });
+
+  .then((res) => getResponseData(res))
 }
 
-export const deleteCardApi = (cardId) => {
+export const deleteCardApi = async (cardId) => {
   return fetch(`${config.baseUrl}/cards/${cardId}`, {
     method: 'DELETE',
-    headers: {
-      authorization: config.headers.authorization,
-      'Content-Type': config.headers['Content-Type'],
-    },
+    headers: config.headers,
   })
-  .then((res) => {
-    if (res.ok) {
-      return res.json();
-    } else {
-      return console.log('Ошибка удаления карточки:', res.status);
-    }
-  })
-  .then((result) => {
-    return result;
-  })
+
+  .then((res) => getResponseData(res))
 }
 
-export const addLikeCardApi = (cardId) => {
+export const addLikeCardApi = async (cardId) => {
   return fetch(`${config.baseUrl}/cards/likes/${cardId}`, {
     method: 'PUT',
-    headers: {
-      authorization: config.headers.authorization,
-      'Content-Type': config.headers['Content-Type'],
-    },
+    headers: config.headers,
   })
-  .then((res) => {
-    if (res.ok) {
-      return res.json();
-    } else {
-      return console.log('Ошибка лайка карточки:', res.status);
-    }
-  })
-  .then((result) => {
-    return result;
-  });
+
+  .then((res) => getResponseData(res))
 }
 
-export const removeLikeCardApi = (cardId) => {
+export const removeLikeCardApi = async (cardId) => {
   return fetch(`${config.baseUrl}/cards/likes/${cardId}`, {
     method: 'DELETE',
-    headers: {
-      authorization: config.headers.authorization,
-      'Content-Type': config.headers['Content-Type'],
-    },
+    headers: config.headers,
   })
-  .then((res) => {
-    if (res.ok) {
-      return res.json();
-    } else {
-      return console.log('Ошибка лайка карточки:', res.status);
-    }
-  })
-  .then((result) => {
-    return result;
-  });
+
+  .then((res) => getResponseData(res))
 }
