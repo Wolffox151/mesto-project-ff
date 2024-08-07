@@ -87,3 +87,12 @@ export const removeLikeCardApi = async (cardId) => {
 
   .then((res) => getResponseData(res))
 }
+
+export const changeAvatarApi = async (cardId) => {
+  return fetch(`${config.baseUrl}/users/me/avatar`, {
+    method: 'PATCH',
+    headers: config.headers,
+  })
+
+  .then((res) => getResponseData(res))
+}

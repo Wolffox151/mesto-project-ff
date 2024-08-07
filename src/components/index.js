@@ -42,6 +42,13 @@ editProfileButton.addEventListener('click', () => {
   openModal(popupTypeProfileEdit);
 });
 
+const popupTypeProfileAvatarEdit = document.querySelector('.popup_type_edit-avatar')
+const editProfileAvatarButton = document.querySelector('.profile__image-container')
+editProfileAvatarButton.addEventListener('click', () => {
+  openModal()
+})
+
+
 
 // @todo: Функция изменения профиляn
 // Находим форму в DOM
@@ -57,27 +64,25 @@ const editProfileForm = () => {
   .then(() => {
     profileTitle.textContent = nameInput.value
     profileDescription.textContent = jobInput.value
+    closeModal(popupTypeProfileEdit)
   })
   // Вставьте новые значения с помощью textContent
-  closeModal(popupTypeProfileEdit)
 }
 
 const popupTypeAddNewCard = document.querySelector('.popup_type_new-card')
 const cardForm = popupTypeAddNewCard.querySelector('.popup__form')
 
 // @todo: Обработа формы добавления карточки
-const inputCardTitle = document.querySelector('.popup__input_type_card-name')
-const inputCardImgLink = document.querySelector('.popup__input_type_url')
+const inputCardTitle = cardForm.querySelector('.popup__input_type_card-name')
+const inputCardImgLink = cardForm.querySelector('.popup__input_type_url')
 const addCardFormSubmit = () => {
   postUserCard(inputCardTitle.value, inputCardImgLink.value)
-  .then(() => {
-    getCards().then((response) => {
-      const newCard = createCard(response[0], response[0]['owner']['_id'], handleDeleteCard, openImagePopup, toggleLikeButton);
-      placesList.prepend(newCard)
-      cardForm.reset()
-    })
-  })
-  closeModal(popupTypeAddNewCard)
+  .then((response) => {
+    const newCard = createCard(response, response['owner']['_id'], handleDeleteCard, openImagePopup, toggleLikeButton);
+    placesList.prepend(newCard)
+    cardForm.reset()
+    closeModal(popupTypeAddNewCard)
+  });
 }
 
 // Прикрепляем обработчик к форме:
