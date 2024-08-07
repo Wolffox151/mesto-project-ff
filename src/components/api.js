@@ -14,7 +14,7 @@ const getResponseData = (res) => {
   }
 }
 
-export const getUserInfo = async () => {
+const getUserInfo = async () => {
   return fetch(`${config.baseUrl}/users/me`, {
     headers: config.headers,
     method: 'GET',
@@ -22,7 +22,7 @@ export const getUserInfo = async () => {
   .then((res) => getResponseData(res))
 };
 
-export const getCards = async () => {
+const getCards = async () => {
   return fetch(`${config.baseUrl}/cards`, {
     headers: config.headers,
     method: 'GET',
@@ -88,11 +88,28 @@ export const removeLikeCardApi = async (cardId) => {
   .then((res) => getResponseData(res))
 }
 
-export const changeAvatarApi = async (cardId) => {
+export const changeAvatarApi = async (inputAvatarImgLink) => {
   return fetch(`${config.baseUrl}/users/me/avatar`, {
     method: 'PATCH',
     headers: config.headers,
+    body: JSON.stringify({
+      avatar: `${inputAvatarImgLink}`,
+    })
   })
 
   .then((res) => getResponseData(res))
+}
+
+export const checkInputImageUrl = async (imageUrl) => {
+  return fetch(`${imageUrl}`, {
+    method: 'HEAD',
+    mode: 'no-cors'
+  })
+  .then((res) => {
+    if (res.ok && res.headers.get('Content-Type').startsWith('image')) {
+      return res.ok
+    } else {
+      return Promise.reject(`Не удалось загрузить картинку`);
+    }
+  })
 }

@@ -1,7 +1,9 @@
 import { deleteCardApi, addLikeCardApi, removeLikeCardApi } from "./api";
+import { openModal } from "./modal";
 
 // @todo: Функция создания карточки
 const templateCard = document.querySelector('#card-template').content.querySelector('.places__item');
+export const popupConfirm = document.querySelector(".popup_type_confirm");
 // @todo: DOM узлы
 export const createCard = (data, userId, onDelete, onImage, onLike) => {
   const newCard = templateCard.cloneNode(true);
@@ -43,8 +45,9 @@ export const createCard = (data, userId, onDelete, onImage, onLike) => {
 
 // @todo: Функция удаления карточки
 export const handleDeleteCard = (card, cardId) => {
-  deleteCardApi(cardId)
-  .then(() => card.remove())
+  openModal(popupConfirm)
+  popupConfirm.dataset.cardId = cardId
+  card.dataset.cardId = cardId;
 }
 
 // @todo: Лайк карточки
