@@ -197,4 +197,4 @@ getInitialInfo()
 })
 .catch((error) => console.error(error))
 
-checkInputImageUrl(`https://koshka.top/uploads/posts/2021-11/1636807724_36-koshka-top-p-koshki-spasenie-kotyat-46.jpg`)
+// checkInputImageUrl(`https://koshka.top/uploads/posts/2021-11/1636807724_36-koshka-top-p-koshki-spasenie-kotyat-46.jpg`)

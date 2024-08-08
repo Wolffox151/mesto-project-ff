@@ -100,16 +100,17 @@ export const changeAvatarApi = async (inputAvatarImgLink) => {
   .then((res) => getResponseData(res))
 }
 
-export const checkInputImageUrl = async (imageUrl) => {
-  return fetch(`${imageUrl}`, {
-    method: 'HEAD',
-    mode: 'no-cors'
-  })
-  .then((res) => {
-    if (res.ok && res.headers.get('Content-Type').startsWith('image')) {
-      return res.ok
-    } else {
-      return Promise.reject(`Не удалось загрузить картинку`);
-    }
-  })
-}
+// Проверка URL картинки, но лень поднимать CORS-proxy
+// export const checkInputImageUrl = async (imageUrl) => {
+//   return fetch(`${imageUrl}`, {
+//     method: 'HEAD',
+//     mode: 'no-cors'
+//   })
+//   .then((res) => {
+//     if (res.ok && res.headers.get('Content-Type').startsWith('image')) {
+//       return res.ok
+//     } else {
+//       return Promise.reject(`Не удалось загрузить картинку`);
+//     }
+//   })
+// }
