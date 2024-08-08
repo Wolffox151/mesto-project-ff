@@ -2,7 +2,7 @@ import '../pages/index.css';
 import { createCard, handleDeleteCard, toggleLikeButton, popupConfirm } from './card.js'
 import { openModal, closeModal, closePopupOnOverlayClick } from './modal.js'
 import { enableValidation, clearValidation } from './validation.js';
-import { postUserProfile, changeAvatarApi, postUserCard, getInitialInfo, deleteCardApi, checkInputImageUrl } from './api.js'
+import { postUserProfile, changeAvatarApi, postUserCard, getInitialInfo, deleteCardApi } from './api.js'
 
 
 const placesList = document.querySelector('.places__list');
