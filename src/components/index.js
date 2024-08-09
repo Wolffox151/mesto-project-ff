@@ -1,8 +1,8 @@
 import '../pages/index.css';
-import { createCard, handleDeleteCard, toggleLikeButton, popupConfirm } from './card.js'
+import { createCard, popupConfirm } from './card.js'
 import { openModal, closeModal, closePopupOnOverlayClick } from './modal.js'
 import { enableValidation, clearValidation } from './validation.js';
-import { postUserProfile, changeAvatarApi, postUserCard, getInitialInfo, deleteCardApi } from './api.js'
+import { postUserProfile, changeAvatarApi, postUserCard, getInitialInfo, deleteCardApi, addLikeCardApi, removeLikeCardApi } from './api.js'
 
 
 const placesList = document.querySelector('.places__list');
@@ -16,17 +16,18 @@ const popupLabelErrorVisibleClass = 'popup__error_visible'
 
 const popupConfirmButton = popupConfirm.querySelector(popupButtonSelector)
 
+
+let cardToDelete;
 const confirmDelete = () => {
   deleteCardApi(popupConfirm.dataset.cardId)
   .then(() => {
-    placesList.querySelector(`[data-card-id="${popupConfirm.dataset.cardId}"]`).remove()
+    delete popupConfirm.dataset.cardId
+    cardToDelete.remove()
+    closeModal(popupConfirm)
+    cardToDelete = null;
   })
   .catch(() => {
     console.error(error)
-  })
-  .finally(() => {
-    delete popupConfirm.dataset.cardId
-    closeModal(popupConfirm)
   })
 }
 
@@ -112,13 +113,13 @@ avatarForm.addEventListener('submit',() => {
   changeAvatarApi(avatarInputLink.value)
   .then((res) => {
     profileImg.style.backgroundImage = `url(${res.avatar})`
+    closeModal(popupTypeProfileAvatarEdit)
   })
   .catch((error) => {
     console.error(error)
   })
   .finally(() => {
     awaitResponseApi(avatarForm.querySelector(popupButtonSelector), false)
-    closeModal(popupTypeProfileAvatarEdit)
   })
 })
 
@@ -139,13 +140,13 @@ const editProfileForm = () => {
   .then(() => {
     profileTitle.textContent = nameInput.value
     profileDescription.textContent = jobInput.value
+    closeModal(popupTypeProfileEdit)
   })
   .catch((error) => {
     console.error(error)
   })
   .finally(() => {
     awaitResponseApi(profileForm.querySelector(popupButtonSelector), false)
-    closeModal(popupTypeProfileEdit)
   })
   // Вставьте новые значения с помощью textContent
 }
@@ -153,25 +154,50 @@ const editProfileForm = () => {
 const popupTypeAddNewCard = document.querySelector('.popup_type_new-card')
 const cardForm = popupTypeAddNewCard.querySelector('.popup__form')
 
+
+// @todo: Функция удаления карточки
+const handleDeleteCard = (card, cardId) => {
+  openModal(popupConfirm)
+  popupConfirm.dataset.cardId = cardId
+  cardToDelete = card;
+}
+
+// @todo: Лайк карточки
+
+const toggleLikeButton = (likeButton, cardId, likesCounterNode) => {
+  if(!likeButton.classList.contains('card__like-button_is-active')) {
+    addLikeCardApi(cardId)
+    .then((res) => {
+      likeButton.classList.add('card__like-button_is-active')
+      likesCounterNode.textContent = `${Number(res.likes.length)}`
+    })
+    .catch((res) => console.error(res))
+  } else {
+    removeLikeCardApi(cardId)
+    .then((res) => {
+      likeButton.classList.remove('card__like-button_is-active')
+      likesCounterNode.textContent = `${Number(res.likes.length)}`
+    })
+    .catch((res) => console.error(res))
+  }
+}
+
 // @todo: Обработа формы добавления карточки
 const inputCardTitle = cardForm.querySelector('.popup__input_type_card-name')
 const inputCardImgLink = cardForm.querySelector('.popup__input_type_url')
 const addCardFormSubmit = async () => {
-  checkInputImageUrl(inputCardImgLink.value)
-  .then((res) => console.log(res))
-  .catch(() => console.error('Неудача'))
   postUserCard(inputCardTitle.value, inputCardImgLink.value)
   .then((response) => {
     const newCard = createCard(response, response['owner']['_id'], handleDeleteCard, openImagePopup, toggleLikeButton);
     placesList.prepend(newCard)
     cardForm.reset()
+    closeModal(popupTypeAddNewCard)
   })
   .catch((error) => {
     console.error(error)
   })
   .finally(() => {
     awaitResponseApi(cardForm.querySelector(popupButtonSelector), false)
-    closeModal(popupTypeAddNewCard)
   })
 }
 

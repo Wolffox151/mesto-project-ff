@@ -1,5 +1,3 @@
-import { deleteCardApi, addLikeCardApi, removeLikeCardApi } from "./api";
-
 // @todo: Функция создания карточки
 const templateCard = document.querySelector('#card-template').content.querySelector('.places__item');
 export const popupConfirm = document.querySelector(".popup_type_confirm");
@@ -40,29 +38,4 @@ export const createCard = (data, userId, onDelete, onImage, onLike) => {
   })
   
   return newCard;
-}
-
-// @todo: Функция удаления карточки
-export const handleDeleteCard = (card, cardId) => {
-  openModal(popupConfirm)
-  popupConfirm.dataset.cardId = cardId
-  card.dataset.cardId = cardId;
-}
-
-// @todo: Лайк карточки
-
-export const toggleLikeButton = (likeButton, cardId, likesCounterNode) => {
-  if(!likeButton.classList.contains('card__like-button_is-active')) {
-    addLikeCardApi(cardId)
-    .then((res) => {
-      likeButton.classList.add('card__like-button_is-active')
-      likesCounterNode.textContent = `${Number(res.likes.length)}`
-    })
-  } else {
-    removeLikeCardApi(cardId)
-    .then((res) => {
-      likeButton.classList.remove('card__like-button_is-active')
-      likesCounterNode.textContent = `${Number(res.likes.length)}`
-    })
-  }
 }
