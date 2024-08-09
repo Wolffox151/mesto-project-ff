@@ -7,6 +7,13 @@ import { postUserProfile, changeAvatarApi, postUserCard, getInitialInfo, deleteC
 
 const placesList = document.querySelector('.places__list');
 const popupButtonSelector = '.popup__button';
+const popupButtonDisabledClass = 'popup__button_disabled'
+const popupInputSelector = '.popup__input';
+const popupInputErrorClass = 'popup__input_type_error'
+const popupLabelSelector = '.popup__error'
+const popupLabelErrorVisibleClass = 'popup__error_visible'
+
+
 const popupConfirmButton = popupConfirm.querySelector(popupButtonSelector)
 
 const confirmDelete = () => {
@@ -56,7 +63,17 @@ const profileFormLabelList = popupTypeProfileEdit.querySelectorAll('.popup__labe
 editProfileButton.addEventListener('click', () => {
   nameInput.value = profileTitle.textContent
   jobInput.value = profileDescription.textContent
-  clearValidation(popupTypeProfileEdit, [profileFormLabelList, false])
+  clearValidation(popupTypeProfileEdit, 
+    {
+      labelList: profileFormLabelList, 
+      buttonState: false,
+      ['popupButtonSelector']: popupButtonSelector,
+      ['popupButtonDisabledClass']: popupButtonDisabledClass,
+      ['popupInputSelector'] : popupInputSelector,
+      ['popupInputErrorClass'] : popupInputErrorClass,
+      ['popupLabelSelector'] : popupLabelSelector,
+      ['popupLabelErrorVisibleClass'] : popupLabelErrorVisibleClass
+    })
   openModal(popupTypeProfileEdit);
 });
 
@@ -68,7 +85,17 @@ const avatarInputLink = avatarForm.querySelector('.popup__input_type_url')
 
 editProfileAvatarButton.addEventListener('click', () => {
   avatarInputLink.value = ''
-  clearValidation(popupTypeProfileAvatarEdit, [avatarLabelList, true])
+  clearValidation(popupTypeProfileAvatarEdit, 
+    {
+      labelList: avatarLabelList, 
+      buttonState: true,
+      ['popupButtonSelector']: popupButtonSelector,
+      ['popupButtonDisabledClass']: popupButtonDisabledClass,
+      ['popupInputSelector'] : popupInputSelector,
+      ['popupInputErrorClass'] : popupInputErrorClass,
+      ['popupLabelSelector'] : popupLabelSelector,
+      ['popupLabelErrorVisibleClass'] : popupLabelErrorVisibleClass
+    })
   openModal(popupTypeProfileAvatarEdit)
 })
 
@@ -158,7 +185,16 @@ const addCardPupupLabelList = popupTypeAddNewCard.querySelectorAll('.popup__labe
 addCardButton.addEventListener('click', () => {
   inputCardTitle.value = ''
   inputCardImgLink.value = ''
-  clearValidation(popupTypeAddNewCard, [addCardPupupLabelList, true])
+  clearValidation(popupTypeAddNewCard, {
+    labelList: addCardPupupLabelList, 
+    buttonState: true,
+    ['popupButtonSelector']: popupButtonSelector,
+    ['popupButtonDisabledClass']: popupButtonDisabledClass,
+    ['popupInputSelector'] : popupInputSelector,
+    ['popupInputErrorClass'] : popupInputErrorClass,
+    ['popupLabelSelector'] : popupLabelSelector,
+    ['popupLabelErrorVisibleClass'] : popupLabelErrorVisibleClass
+  })
   openModal(popupTypeAddNewCard);
 });
 
@@ -196,5 +232,3 @@ getInitialInfo()
   loadCards(cardsData, userId)
 })
 .catch((error) => console.error(error))
-
-// checkInputImageUrl(`https://koshka.top/uploads/posts/2021-11/1636807724_36-koshka-top-p-koshki-spasenie-kotyat-46.jpg`)

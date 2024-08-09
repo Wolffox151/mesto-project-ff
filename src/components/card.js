@@ -1,5 +1,4 @@
 import { deleteCardApi, addLikeCardApi, removeLikeCardApi } from "./api";
-import { openModal } from "./modal";
 
 // @todo: Функция создания карточки
 const templateCard = document.querySelector('#card-template').content.querySelector('.places__item');
