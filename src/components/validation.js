@@ -20,13 +20,12 @@ const checkInputVadility = (formElement, inputElement, inputErrorClass, errorCla
     showInputError(formElement, inputElement, inputErrorClass, errorClass, inputElement.dataset.errorMessage)
   } else {
     hideInputError(formElement, inputElement, inputErrorClass, errorClass)
-    inputElement.setCustomValidity("")
 }
 
   if (!inputElement.validity.valid) {
     showInputError(formElement, inputElement, inputErrorClass, errorClass, inputElement.validationMessage)
   } else {
-    hideInputError(formElement, inputElement, inputErrorClass, errorClass)  
+    hideInputError(formElement, inputElement, inputErrorClass, errorClass)
   }
 }
 
@@ -74,11 +73,9 @@ const enableValidation = (validateParams) => {
 
 const clearValidation = (formElement, validationconfig) => {
   const inputList = Array.from(formElement.querySelectorAll(`${validationconfig.popupInputSelector}`))
-  if (hasInvalidInput(inputList)) {
-    inputList.forEach((inputElement) => {
-      hideInputError(formElement, inputElement, validationconfig.popupInputErrorClass, validationconfig.popupLabelErrorVisibleClass)
-      checkInputVadility(formElement, inputElement, validationconfig.popupInputErrorClass, validationconfig.popupLabelErrorVisibleClass)
-    })
-  }
+  inputList.forEach((inputElement) => {
+    checkInputVadility(formElement, inputElement, validationconfig.popupInputErrorClass, validationconfig.popupLabelErrorVisibleClass)
+    hideInputError(formElement, inputElement, validationconfig.popupInputErrorClass, validationconfig.popupLabelErrorVisibleClass)
+  })
   toggleButtonState(formElement, inputList, validationconfig.popupButtonSelector, validationconfig.popupButtonDisabledClass)
 }
