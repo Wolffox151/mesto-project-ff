@@ -73,14 +73,12 @@ const enableValidation = (validateParams) => {
 }
 
 const clearValidation = (formElement, validationconfig) => {
-  formElement.querySelector(validationconfig.popupButtonSelector).disabled=validationconfig.buttonState;
-  validationconfig.labelList.forEach((labelElement) => {
-    labelElement.querySelector(validationconfig.popupInputSelector).classList.remove(validationconfig.popupInputErrorClass)
-    labelElement.querySelector(validationconfig.popupLabelSelector).classList.remove(validationconfig.popupLabelErrorVisibleClass)
-  })
-  if (formElement.querySelector(validationconfig.popupButtonSelector).disabled) {
-    formElement.querySelector(validationconfig.popupButtonSelector).classList.add(validationconfig.popupButtonDisabledClass)
-  } else {
-    formElement.querySelector(validationconfig.popupButtonSelector).classList.remove(validationconfig.popupButtonDisabledClass)
+  const inputList = Array.from(formElement.querySelectorAll(`${validationconfig.popupInputSelector}`))
+  if (hasInvalidInput(inputList)) {
+    inputList.forEach((inputElement) => {
+      hideInputError(formElement, inputElement, validationconfig.popupInputErrorClass, validationconfig.popupLabelErrorVisibleClass)
+      checkInputVadility(formElement, inputElement, validationconfig.popupInputErrorClass, validationconfig.popupLabelErrorVisibleClass)
+    })
   }
+  toggleButtonState(formElement, inputList, validationconfig.popupButtonSelector, validationconfig.popupButtonDisabledClass)
 }

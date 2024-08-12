@@ -72,7 +72,7 @@ editProfileButton.addEventListener('click', () => {
       ['popupButtonDisabledClass']: popupButtonDisabledClass,
       ['popupInputSelector'] : popupInputSelector,
       ['popupInputErrorClass'] : popupInputErrorClass,
-      ['popupLabelSelector'] : popupLabelSelector,
+
       ['popupLabelErrorVisibleClass'] : popupLabelErrorVisibleClass
     })
   openModal(popupTypeProfileEdit);
@@ -89,12 +89,12 @@ editProfileAvatarButton.addEventListener('click', () => {
   clearValidation(popupTypeProfileAvatarEdit, 
     {
       labelList: avatarLabelList, 
-      buttonState: true,
+
       ['popupButtonSelector']: popupButtonSelector,
       ['popupButtonDisabledClass']: popupButtonDisabledClass,
       ['popupInputSelector'] : popupInputSelector,
       ['popupInputErrorClass'] : popupInputErrorClass,
-      ['popupLabelSelector'] : popupLabelSelector,
+
       ['popupLabelErrorVisibleClass'] : popupLabelErrorVisibleClass
     })
   openModal(popupTypeProfileAvatarEdit)
@@ -186,6 +186,7 @@ const toggleLikeButton = (likeButton, cardId, likesCounterNode) => {
 const inputCardTitle = cardForm.querySelector('.popup__input_type_card-name')
 const inputCardImgLink = cardForm.querySelector('.popup__input_type_url')
 const addCardFormSubmit = async () => {
+  awaitResponseApi(cardForm.querySelector(popupButtonSelector), true)
   postUserCard(inputCardTitle.value, inputCardImgLink.value)
   .then((response) => {
     const newCard = createCard(response, response['owner']['_id'], handleDeleteCard, openImagePopup, toggleLikeButton);
@@ -211,14 +212,13 @@ const addCardPupupLabelList = popupTypeAddNewCard.querySelectorAll('.popup__labe
 addCardButton.addEventListener('click', () => {
   inputCardTitle.value = ''
   inputCardImgLink.value = ''
-  clearValidation(popupTypeAddNewCard, {
+  clearValidation(popupTypeAddNewCard, 
+  {
     labelList: addCardPupupLabelList, 
-    buttonState: true,
     ['popupButtonSelector']: popupButtonSelector,
     ['popupButtonDisabledClass']: popupButtonDisabledClass,
     ['popupInputSelector'] : popupInputSelector,
     ['popupInputErrorClass'] : popupInputErrorClass,
-    ['popupLabelSelector'] : popupLabelSelector,
     ['popupLabelErrorVisibleClass'] : popupLabelErrorVisibleClass
   })
   openModal(popupTypeAddNewCard);
